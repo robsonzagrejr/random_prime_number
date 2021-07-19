@@ -50,6 +50,10 @@ MT = None
 # Define parameters of MT 
 def _set_mt19937_type(word_size=32, seed=None):
     global MT
+    init_mt = False
+    if MT:
+        init_mt = (MT['seed'] != seed) or ((MT['w'] != word_size) and MT['seed'])
+
     MT = dict( 
         state = [],
         seed = seed,
@@ -65,18 +69,18 @@ def _set_mt19937_type(word_size=32, seed=None):
         **coefficients[str(word_size)]
     )
     # Initialize states if seeded
-    if seed:
+    if init_mt:
         _init_seed()
 
 
 # Define MT as 32 bits word
 def set_as_mt19937(seed=None):
-    _set_mt19937_type(32, seed)
+    _set_mt19937_type(word_size=32, seed=seed)
 
 
 # Define MT as 64 bits word
 def set_as_mt19937_64(seed=None):
-    _set_mt19937_type(64, seed)
+    _set_mt19937_type(word_size=64, seed=seed)
 
 
 #====================
@@ -117,8 +121,7 @@ def _init_seed():
 
     # Generate states for MT
     for i in range(1, MT['n']):
-        print(MT)
-        num = (MT['f'] * (MT['state'][i-1] ^ (MT['state'][i-1] >> (MT['w']-2))) + i)
+        num = MT['f'] * (MT['state'][i-1] ^ (MT['state'][i-1] >> (MT['w']-2))) + i
         # Append in state of MT the lowest w bits
         MT['state'].append(_lowest_n_bits(num, MT['w']))
 
@@ -174,7 +177,7 @@ def extract_number():
 
 # Generate a random int
 def gen_int():
-    random_seed
+    global random_seed
 
     # Get a random seed if seed was not fixed
     if random_seed:
@@ -220,13 +223,24 @@ def gen_n_bits(n_bits):
 
     # Revert MT to previus implementation if needed
     if change_mt:
-        set_as_mt19937(MT)
+        set_as_mt19937(seed=MT['seed'])
 
 
     return random_number
 
 
+def gen_randint(lower=0, upper=None):
+    global MT
+
+    upper = upper if upper else ((1 << MT['w']-1) - 1)
+
+    number = gen_int()
+
+    number = (number + lower) % upper
+
+    return number
+ 
+
 # Initialize MT as 32bits default
 set_as_mt19937()
-print(MT)
 
