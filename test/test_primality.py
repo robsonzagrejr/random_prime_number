@@ -42,10 +42,10 @@ def _gen_key(size, checker, generator):
     prime_number = 4
     aux = 0
     while not checker.is_prob_prime(prime_number):
-        sys.stdout.write("Generating: %s  \r" % ('.' * (aux%9)))
+        sys.stdout.write("Generating: %s \r" % ('.' * (aux%9)))
         sys.stdout.flush()
         aux += 1
-        prime_number = generator.gen_n_bits(size)
+        prime_number = generator.gen_n_bits(size) | 1
 
     return prime_number
 
@@ -57,9 +57,11 @@ def test_key_gen_time():
     keys = {}
     print("========= MR | BBS =========")
     keys['mr|bbs'] = {}
-    bbs.set_seed(seed)
-    mt.set_seed(seed)
-    for key_size in keys_sizes[:-3]:
+    bbs.random_seed = 127
+    mt.randon_seed = 127
+
+    for key_size in keys_sizes:
+        print(key_size)
         start = time.time()
         num = _gen_key(key_size, mr, bbs)
         end = time.time()
@@ -69,18 +71,18 @@ def test_key_gen_time():
 
     print("========= MR | MT =========")
     keys['mr|mt'] = {}
-    for key_size in keys_sizes[:-3]:
+    for key_size in keys_sizes:
         start = time.time()
         num = _gen_key(key_size, mr, mt)
         end = time.time()
         print(f"\n{key_size} bits: {end - start} s")
         keys['mr|mt'][key_size] = {'key':num, 'time': end-start}
     print("=======================")
+    json.dump(keys, open('test_keys.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
+    return
     print("========= SS | BBS =========")
     keys['ss|bbs'] = {}
-    bbs.set_seed(seed)
-    mt.set_seed(seed)
     for key_size in keys_sizes[:-3]:
         start = time.time()
         num = _gen_key(key_size, ss, bbs)

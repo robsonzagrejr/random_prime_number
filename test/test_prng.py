@@ -1,4 +1,5 @@
 import time
+import json
 
 import prng.blum_blum_shub as bbs
 import prng.mersenne_twister as mt
@@ -42,21 +43,28 @@ def test_bit_size_gen_time():
     bbs.set_seed(seed)
     mt.set_seed(seed)
 
+    random_numbers= {}
     print("========= BBS =========")
+    random_numbers['bbs'] = {}
     for bit_size in bits_sizes:
         start = time.time()
         num = bbs.gen_n_bits(bit_size)
         end = time.time()
         print(f"{bit_size} bits: ","{:.4e}s".format(end - start))
+        random_numbers['bbs'][bit_size]= {'num': num, 'time': (end-start)}
     print("=======================")
 
     print("========= MT =========")
+    random_numbers['mt'] = {}
     for bit_size in bits_sizes:
         start = time.time()
         num = mt.gen_n_bits(bit_size)
         end = time.time()
         print(f"{bit_size} bits: ","{:.4e}s".format(end - start))
+        random_numbers['mt'][bit_size]= {'num': num, 'time': (end-start)}
     print("=======================")
+
+    json.dump(random_numbers, open('test_random_numbers.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
 
 if __name__ == '__main__':

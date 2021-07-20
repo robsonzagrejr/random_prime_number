@@ -43,7 +43,7 @@ def is_prob_prime(n, k=40):
         aux_base_a = pow(a,pow_e,n)
 
         # 'a' is a relatively prime to n?
-        if (aux_base_a != (x % n)):
+        if x == 0 or ((aux_base_a % n) != (x % n)):
             return False
     # All 'a's is relatively prime to n 
     return True
