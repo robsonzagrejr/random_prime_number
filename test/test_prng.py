@@ -5,7 +5,7 @@ import prng.mersenne_twister as mt
 
 # Parameter
 seed = 27
-bits_sizes = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 2048, 4096]
+bits_sizes = [32, 40, 56, 80, 128, 168, 224, 256, 512, 1024, 2048, 4096]
 
 
 def test_same_pseudo_sequence():
@@ -16,7 +16,10 @@ def test_same_pseudo_sequence():
     bbs.set_seed(seed)
     bbs_sequence_ = [bbs.gen_int() for i in range(0,100)]
 
-    assert not set([False for e in bbs_sequence if e not in bbs_sequence_]), "ERROR(BBS): Seed not working"
+    assert (
+        not set([False for e in bbs_sequence if e not in bbs_sequence_]),
+        "ERROR(BBS): Seed not working"
+    )
     print("(BBS) ok")
 
     # MT
@@ -25,7 +28,10 @@ def test_same_pseudo_sequence():
     mt.set_seed(seed)
     mt_sequence_ = [mt.gen_int() for i in range(0,100)]
 
-    assert not set([e for e in mt_sequence if e not in mt_sequence_]) == {}, "ERROR(MT): Seed not working"
+    assert (
+        not set([e for e in mt_sequence if e not in mt_sequence_]) == {},
+        "ERROR(MT): Seed not working"
+    )
     print("(MT) ok")
 
 

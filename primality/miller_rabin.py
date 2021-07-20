@@ -1,72 +1,51 @@
-import time
-import sys
+# Implementation of Blum Blum Shub
+# Copyright (c) 2021 Robson Zagre Júnior
 
-def primality_test(n, k=40):
+import prng.blum_blum_shub as bbs
+
+def is_prob_prime(n, k=40):
+    # Simple Detecion of first primes
+    if n in [1,2,3]:
+        return True
+
+    # Define 'd' and 'r' for n = 2(**r)*d + 1
     d = n - 1
     r = 0
     while d%2 == 0:
         r += 1
         d = d >> 1
-    #assert n == ((pow(2,r))*d)+1, "Failed in found 'd' and 'r'"
 
-    for ik in range(0, k):
-        a = mt.gen_randint(2, n-2) #random in range [2, n-2]
+    # Simple check, disable for beter performace
+    #assert n == ((pow(2,r))*d)+1 
+
+    # For k interations:
+    for _ in range(0, k):
+        # Pick a random integer in range [2, n-2]
+        a = bbs.gen_randint(2, n-1)
+
+        # Get value for Fermat's little theorem
         x = pow(a,d,n)
+
+        # 'n' is a strong probable prime?
         if (x == 1) or (x == n-1):
+            # Continue loop because 'a' can be a strong lier
             continue 
 
-        base_prime = False
-        for ir in range(0, r-1):
-            x = pow(x,2,n) #(x**2) % n
+        # Continue checking for nexts pows
+        a_can_be_valid = True
+        for _ in range(0, r):
+            # Get next mod(n) for x
+            x = pow(x,2,n)
+
+            # Checking if 'a' still valid
             if (x == n-1):
-                base_prime = True
+                a_can_be_valid = False
                 break
 
-        if not base_prime:
+        # If fails, then previous 'a's are strong liers
+        if a_can_be_valid:
             return False
 
     return True
 
 
-#mt.set_seed(27)
-size = 1024
-prime = False
-num_prime = 0
-print('-->Start')
-progress = 0
-start = time.time()
-while num_prime % 4 != 3:
-    prime = False
-    while not prime:
-        progress += 1
-        sys.stdout.write("Progress: %d  \r" % (progress) )
-        sys.stdout.flush()
-        num_prime = mt.gen_n_bits(size)
-        #num_prime = mt.gen_n_bits(2048)
-        num_prime = num_prime | 1
-        prime = primality_test(num_prime)
-
-end = time.time()
-print(f'\nNumero primo Achado : {num_prime}')
-print(f'Tempo -> {end-start}')
-
-
-prime = False
-num_prime = 0
-print('-->Start')
-progress = 0
-start = time.time()
-while num_prime%4!=3:
-    prime = False
-    while not prime:
-        progress += 1
-        sys.stdout.write("Progress: %d  \r" % (progress) )
-        sys.stdout.flush()
-        num_prime = mt.gen_n_bits(size)
-        #num_prime = mt.gen_n_bits(2048)
-        num_prime = num_prime | 1
-        prime = primality_test(num_prime)
-
-end = time.time()
-print(f'\nNumero primo Achado : {num_prime}')
-print(f'Tempo -> {end-start}')

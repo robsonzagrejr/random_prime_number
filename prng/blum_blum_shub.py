@@ -27,7 +27,7 @@ random_seed = True # Check if the seed was provide or need to be random
 # Validation if seed provide is valid
 def check_seed(seed):
     # Improvement of validation because p and q are primes and M = (p*q)
-    return ((seed % p) == 0) or ((seed % q) == 0)
+    return ((seed % p) != 0) and ((seed % q) != 0)
 
 
 # Define a random seed
@@ -99,11 +99,14 @@ def gen_randint(lower=0, upper=None):
     # Define upper as limited or bigger value allowed
     upper = upper if upper else ((1 << 32) - 1)
 
-    # Generate a int32
-    number = gen_int()
+    while True:
+        # Generate a int32
+        number = gen_int()
 
-    # Applying limits
-    number = (number + lower) % upper
+        # Applying limits
+        number = number % upper
+        if number >= lower:
+            break
 
     return number
  

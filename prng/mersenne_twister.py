@@ -238,11 +238,14 @@ def gen_randint(lower=0, upper=None):
     # Define upper as limited or bigger value allowed
     upper = upper if upper else ((1 << MT['w']-1) - 1)
 
-    # Generate number
-    number = gen_int()
+    while True:
+        # Generate a int32
+        number = gen_int()
 
-    # Applying limits
-    number = (number + lower) % upper
+        # Applying limits
+        number = number % upper
+        if number >= lower:
+            break
 
     return number
  
