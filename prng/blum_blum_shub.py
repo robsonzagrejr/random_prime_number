@@ -30,6 +30,17 @@ def check_seed(seed):
     return ((seed % p) == 0) or ((seed % q) == 0)
 
 
+# Define a random seed
+def _set_random_seed():
+    global x
+
+    # Define random seed until is valid
+    while True:
+        x = _random_int()
+        if check_seed(x):
+            break
+
+
 # Define a fixed seed
 def set_seed(seed):
     global random_seed, x
@@ -48,11 +59,7 @@ def gen_n_bits(n_bits):
     global random_seed, x, M
 
     if random_seed:
-        # Define random seed until is valid
-        while True:
-            x = _random_int()
-            if check_seed(x):
-                break
+        _set_random_seed() 
 
     random_number = 0
     while random_number.bit_length() < n_bits:
@@ -65,3 +72,38 @@ def gen_n_bits(n_bits):
 
     return random_number
 
+
+# Generate a ranfom integer with 32 bits
+def gen_int(size=32):
+    global random_seed, x, M
+
+    if random_seed:
+        _set_random_seed() 
+
+    random_number = 0
+    # Execute just by size of int (not garantee that number will have size bits)
+    for _ in range(0, size):
+        # Generate next value in serie
+        x = pow(x,2,M)
+
+        # Join least significant bit of serie with random_number
+        random_number <<= 1
+        random_number |= (x & 1)
+
+    return random_number
+
+
+# Generate a random number in range
+def gen_randint(lower=0, upper=None):
+
+    # Define upper as limited or bigger value allowed
+    upper = upper if upper else ((1 << 32) - 1)
+
+    # Generate a int32
+    number = gen_int()
+
+    # Applying limits
+    number = (number + lower) % upper
+
+    return number
+ 

@@ -231,13 +231,17 @@ def gen_n_bits(n_bits):
     return random_number
 
 
+# Generate a random number in range
 def gen_randint(lower=0, upper=None):
     global MT
 
+    # Define upper as limited or bigger value allowed
     upper = upper if upper else ((1 << MT['w']-1) - 1)
 
+    # Generate number
     number = gen_int()
 
+    # Applying limits
     number = (number + lower) % upper
 
     return number
