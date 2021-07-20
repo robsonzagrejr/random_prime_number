@@ -57,11 +57,11 @@ def test_key_gen_time():
     keys = {}
     print("========= MR | BBS =========")
     keys['mr|bbs'] = {}
-    bbs.random_seed = True
-    mt.randon_seed = True
+    bbs.set_seed(23)
+    mt.set_as_mt19937_64()
+    mt.set_seed(23)
 
     for key_size in keys_sizes:
-        print(key_size)
         start = time.time()
         num = _gen_key(key_size, mr, bbs)
         end = time.time()
@@ -78,7 +78,7 @@ def test_key_gen_time():
         print(f"\n{key_size} bits: {end - start} s")
         keys['mr|mt'][key_size] = {'key':num, 'time': end-start}
     print("=======================")
-    json.dump(keys, open('test_keys.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+    json.dump(keys, open('test_keys_seed.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
     return
     print("========= SS | BBS =========")
@@ -101,7 +101,7 @@ def test_key_gen_time():
         keys['ss|mt'][key_size] = {'key':num, 'time': end-start}
     print("=======================")
 
-    json.dump(keys, open('test_keys.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+    json.dump(keys, open('test_keys_seed.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
 
 
