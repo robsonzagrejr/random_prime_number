@@ -1,6 +1,6 @@
 # Implementatiomn of Mersenne Twister 
 
-from .src.utils import (
+from src.utils import (
     _lowest_n_bits,
     _random_int
 )
@@ -186,7 +186,7 @@ def gen_int():
     return extract_number()
      
 
-# Generate a random number with bytes size
+# Generate a random number with bits size
 def gen_n_bits(n_bits):
     global MT, random_seed
 

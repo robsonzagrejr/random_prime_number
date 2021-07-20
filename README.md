@@ -17,3 +17,5 @@ https://github.com/ruby/ruby/blob/master/missing/mt19937.c
 https://www.unix.com/man-page/posix/4/urandom/
 
 https://www.geeksforgeeks.org/runs-test-of-randomness-in-python/
+
+https://www.researchgate.net/publication/221354947_Comparison_of_Two_Pseudo-Random_Number_Generators
