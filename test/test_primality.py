@@ -57,8 +57,8 @@ def test_key_gen_time():
     keys = {}
     print("========= MR | BBS =========")
     keys['mr|bbs'] = {}
-    bbs.random_seed = 127
-    mt.randon_seed = 127
+    bbs.random_seed = True
+    mt.randon_seed = True
 
     for key_size in keys_sizes:
         print(key_size)
