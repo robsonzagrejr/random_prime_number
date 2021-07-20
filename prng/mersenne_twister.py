@@ -1,4 +1,5 @@
-# Implementatiomn of Mersenne Twister 
+# Implementation of Mersenne Twister 
+# Copyright (c) 2021 Robson Zagre Júnior
 
 from src.utils import (
     _lowest_n_bits,
@@ -104,11 +105,9 @@ def set_seed(seed):
     _init_seed()
 
 
-#====================
-#=    Parameters    =
-#====================
-
-
+#==========================
+#=    Mersenne Twister    =
+#==========================
 # Initialize the series X (state) for a seed
 def _init_seed():
     global MT
@@ -186,7 +185,10 @@ def gen_int():
     return extract_number()
      
 
-# Generate a random number with bits size
+#==========================
+#=       Generators       =
+#==========================
+## Generate a random number with bits size
 def gen_n_bits(n_bits):
     global MT, random_seed
 
