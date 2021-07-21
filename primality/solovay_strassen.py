@@ -22,6 +22,7 @@ def jacobi(a, n):
     else:
         return 0
 
+
 def is_prob_prime(n, k=40):
     # Simple Detection of first primes
     if n in [1,2,3]:

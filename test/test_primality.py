@@ -80,30 +80,8 @@ def test_key_gen_time():
     print("=======================")
     json.dump(keys, open('test_keys_seed.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
-    return
-    print("========= SS | BBS =========")
-    keys['ss|bbs'] = {}
-    for key_size in keys_sizes[:-3]:
-        start = time.time()
-        num = _gen_key(key_size, ss, bbs)
-        end = time.time()
-        print(f"\n{key_size} bits: {end - start} s")
-        keys['ss|bbs'][key_size] = {'key':num, 'time': end-start}
-    print("=======================")
-
-    print("========= SS | MT =========")
-    keys['ss|mt'] = {}
-    for key_size in keys_sizes[:-3]:
-        start = time.time()
-        num = _gen_key(key_size, ss, mt)
-        end = time.time()
-        print(f"\n{key_size} bits: {end - start} s")
-        keys['ss|mt'][key_size] = {'key':num, 'time': end-start}
-    print("=======================")
-
-    json.dump(keys, open('test_keys_seed.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
-
-
+    # Unfurtunatly the test with SS was taken to much time and for some bits
+    # was neve end :(
 
 if __name__ == '__main__':
     test_simple_primality()
